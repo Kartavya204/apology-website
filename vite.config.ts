@@ -6,9 +6,8 @@ import path from "path";
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
-    // The code below enables dev tools like taking screenshots of your site
-    // while it is being developed on chef.convex.dev.
-    // Feel free to remove this code if you're no longer developing your app with Chef.
+
+    // Dev tool (keep as it is)
     mode === "development"
       ? {
           name: "inject-chef-dev",
@@ -25,7 +24,7 @@ window.addEventListener('message', async (message) => {
   const worker = await import('https://chef.convex.dev/scripts/worker.bundled.mjs');
   await worker.respondToMessage(message);
 });
-            `,
+                `,
                 map: null,
               };
             }
@@ -33,11 +32,14 @@ window.addEventListener('message', async (message) => {
           },
         }
       : null,
-    // End of code for taking screenshots on chef.convex.dev.
   ].filter(Boolean),
+
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
+
+  // ✅ 🔥 IMPORTANT FIX FOR RENDER
+  base: "./",
 }));
