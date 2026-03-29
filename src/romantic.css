@@ -1,0 +1,492 @@
+/* ═══════════════════════════════════════════════
+   ROMANTIC APOLOGY WEBSITE — STYLES
+   ═══════════════════════════════════════════════ */
+
+/* ── CSS Variables (easy to customize) ── */
+:root {
+  --pink-light: #fff0f5;
+  --pink-mid:   #ffd6e7;
+  --pink-deep:  #ff85b3;
+  --pink-hot:   #e8437a;
+  --rose:       #c9184a;
+  --lavender:   #e8d5f5;
+  --purple-soft:#c77dff;
+  --gold:       #ffd700;
+  --text-dark:  #4a1942;
+  --text-mid:   #7b3f6e;
+  --white-soft: rgba(255,255,255,0.92);
+  --shadow:     0 8px 40px rgba(200, 50, 100, 0.18);
+  --glow:       0 0 30px rgba(255, 133, 179, 0.5);
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--pink-light);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* ── App Shell ── */
+.romantic-app {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fff0f5 0%, #fce4ec 40%, #f3e5f5 100%);
+}
+
+/* ═══════════════════════════════════════════════
+   FLOATING HEARTS
+   ═══════════════════════════════════════════════ */
+.floating-hearts-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -2rem;
+  left: var(--left);
+  font-size: var(--size);
+  animation: floatUp var(--duration) var(--delay) infinite ease-in-out;
+  opacity: 0;
+  filter: blur(0.3px);
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0) rotate(-10deg) scale(0.8); opacity: 0; }
+  10%  { opacity: 0.7; }
+  50%  { transform: translateY(-50vh) rotate(10deg) scale(1.1); opacity: 0.5; }
+  90%  { opacity: 0.2; }
+  100% { transform: translateY(-105vh) rotate(-5deg) scale(0.9); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════
+   SECTIONS
+   ═══════════════════════════════════════════════ */
+.romantic-section {
+  position: absolute;
+  inset: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  z-index: 1;
+}
+
+.romantic-section.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.romantic-section.exit {
+  opacity: 0;
+  transform: translateY(-60px);
+  pointer-events: none;
+}
+
+.romantic-section.hidden-section {
+  opacity: 0;
+  transform: translateY(60px);
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════
+   LANDING SECTION
+   ═══════════════════════════════════════════════ */
+.landing-content {
+  text-align: center;
+  max-width: 640px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  z-index: 2;
+}
+
+/* Sparkle ring around heart */
+.sparkle-ring {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulseRing 2.5s ease-in-out infinite;
+}
+
+.sparkle-ring::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(255,133,179,0.6) 25%,
+    transparent 50%,
+    rgba(200,119,255,0.5) 75%,
+    transparent 100%
+  );
+  animation: spinRing 4s linear infinite;
+}
+
+.sparkle-ring::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,214,231,0.8) 0%, transparent 70%);
+}
+
+@keyframes spinRing {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseRing {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.08); }
+}
+
+.big-heart {
+  font-size: 3.5rem;
+  position: relative;
+  z-index: 1;
+  animation: heartbeat 1.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(255,100,150,0.7));
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%       { transform: scale(1.2); }
+  28%       { transform: scale(1); }
+  42%       { transform: scale(1.15); }
+  70%       { transform: scale(1); }
+}
+
+/* To name */
+.to-name {
+  font-size: 1.1rem;
+  color: var(--text-mid);
+  font-style: italic;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  animation: fadeInUp 1s 0.3s forwards;
+}
+
+/* Typing text */
+.sorry-text {
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: 700;
+  color: var(--rose);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 20px rgba(200,24,74,0.25);
+  min-height: 1.3em;
+}
+
+.typing-cursor {
+  border-right: 3px solid var(--pink-deep);
+  padding-right: 4px;
+  animation: blink 0.75s step-end infinite;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 0;
+  animation: typing 2.8s steps(30, end) 0.5s forwards, blink 0.75s step-end infinite;
+}
+
+.typing-done .typing-cursor {
+  border-right: none;
+  animation: typing 2.8s steps(30, end) 0.5s forwards;
+}
+
+@keyframes typing {
+  from { max-width: 0; }
+  to   { max-width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+  color: var(--text-mid);
+  line-height: 1.8;
+  max-width: 520px;
+  font-style: italic;
+  padding: 0 0.5rem;
+}
+
+.hidden-text { opacity: 0; }
+
+.fade-in-up {
+  animation: fadeInUp 1.2s 0.2s both;
+}
+
+.fade-in-slow {
+  animation: fadeInUp 1.4s 0.2s both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════ */
+.continue-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2.2rem;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, var(--pink-deep), var(--rose));
+  color: white;
+  font-size: 1.05rem;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(200,24,74,0.35), var(--glow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.6s ease;
+}
+
+.continue-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 8px 30px rgba(200,24,74,0.45), 0 0 40px rgba(255,133,179,0.6);
+}
+
+.continue-btn:active { transform: scale(0.97); }
+
+.btn-heart {
+  animation: heartbeat 1.4s ease-in-out infinite;
+  display: inline-block;
+}
+
+.btn-visible {
+  opacity: 1;
+  transform: translateY(0);
+  animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+.btn-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ═══════════════════════════════════════════════
+   VIDEO SECTION
+   ═══════════════════════════════════════════════ */
+.video-content {
+  text-align: center;
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8rem;
+  z-index: 2;
+}
+
+.video-label {
+  font-size: 1.3rem;
+  color: var(--text-mid);
+  font-style: italic;
+  animation: fadeInUp 0.8s both;
+}
+
+.video-frame {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow), 0 0 0 4px var(--pink-mid), 0 0 0 8px rgba(255,133,179,0.2);
+  background: var(--pink-mid);
+  aspect-ratio: 16/9;
+  position: relative;
+}
+
+.the-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--pink-mid), var(--lavender));
+  min-height: 280px;
+}
+
+.placeholder-inner {
+  text-align: center;
+  color: var(--text-mid);
+}
+
+.placeholder-icon { font-size: 3rem; display: block; margin-bottom: 0.8rem; }
+
+.placeholder-inner p { font-size: 1rem; margin-bottom: 0.4rem; }
+
+.placeholder-hint {
+  font-size: 0.8rem !important;
+  opacity: 0.7;
+}
+
+.placeholder-hint code {
+  background: rgba(255,255,255,0.6);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+/* ═══════════════════════════════════════════════
+   FINAL SECTION
+   ═══════════════════════════════════════════════ */
+.final-content {
+  text-align: center;
+  max-width: 580px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  z-index: 2;
+}
+
+/* Heart burst */
+.heart-burst {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.burst-heart {
+  position: absolute;
+  font-size: 1.6rem;
+  animation: orbitHeart 4s calc(var(--i) * 0.8s) ease-in-out infinite;
+  transform-origin: 0 0;
+}
+
+@keyframes orbitHeart {
+  0%   { transform: rotate(calc(var(--i) * 72deg)) translateX(45px) scale(0.8); opacity: 0.6; }
+  50%  { transform: rotate(calc(var(--i) * 72deg + 180deg)) translateX(55px) scale(1.2); opacity: 1; }
+  100% { transform: rotate(calc(var(--i) * 72deg + 360deg)) translateX(45px) scale(0.8); opacity: 0.6; }
+}
+
+.final-message {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  color: var(--text-dark);
+  line-height: 1.9;
+  font-style: italic;
+  background: var(--white-soft);
+  padding: 1.5rem 2rem;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--pink-deep);
+  animation: fadeInUp 1s 0.3s both;
+}
+
+.hope-text {
+  font-size: 1.4rem;
+  color: var(--rose);
+  font-weight: 600;
+  animation: fadeInUp 1s 0.6s both;
+}
+
+/* Forgive Me Button */
+.forgive-btn {
+  padding: 1rem 2.8rem;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #ff6b9d, #c9184a);
+  color: white;
+  font-size: 1.2rem;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 25px rgba(200,24,74,0.4), 0 0 0 0 rgba(255,107,157,0.5);
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+  animation: pulseGlow 2s ease-in-out infinite, fadeInUp 1s 0.9s both;
+  letter-spacing: 0.03em;
+}
+
+.forgive-btn:hover {
+  box-shadow: 0 10px 35px rgba(200,24,74,0.5), 0 0 50px rgba(255,107,157,0.5);
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 6px 25px rgba(200,24,74,0.4), 0 0 0 0 rgba(255,107,157,0.4); }
+  50%       { box-shadow: 0 6px 25px rgba(200,24,74,0.4), 0 0 0 14px rgba(255,107,157,0); }
+}
+
+/* Forgiven state */
+.forgiven-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  animation: popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+.forgiven-emoji {
+  font-size: 3.5rem;
+  animation: heartbeat 1.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(255,100,150,0.7));
+}
+
+.forgiven-message p {
+  font-size: 1.1rem;
+  color: var(--rose);
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .landing-content, .video-content, .final-content {
+    gap: 1.2rem;
+    padding: 0 0.5rem;
+  }
+
+  .continue-btn, .forgive-btn {
+    padding: 0.75rem 1.8rem;
+    font-size: 0.95rem;
+  }
+
+  .final-message {
+    padding: 1.2rem 1.2rem;
+  }
+
+  .sparkle-ring { width: 90px; height: 90px; }
+  .big-heart { font-size: 2.8rem; }
+}
