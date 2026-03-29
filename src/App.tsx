@@ -10,16 +10,12 @@ export default function App() {
   // ─── CUSTOMIZE THESE ───────────────────────────────────────────────
   const HER_NAME = "My Love";
   const SORRY_MESSAGE = "I'm truly, deeply sorry.";
-  const SUBTITLE =
-    "I’m truly sorry for all the mistakes I’ve made and for hurting you. I’m sorry I wasn’t there when you needed me the most. I regret not showing my love and unintentionally making you cry. You mean everything to me, and I hope you can forgive me ❤️";
+  const SUBTITLE = "I’m truly sorry for all the mistakes I’ve made and for hurting you. I’m sorry I wasn’t there when you needed me the most. I regret not showing my love and unintentionally making you cry. You mean everything to me, and I hope you can forgive me ❤️";
 
-  // ✅ GOOGLE DRIVE EMBED LINK (WORKING)
-  const VIDEO_ID = "1gXPBylaUM8BuBQhbm57DoVn3SD34gDD5";
-  const VIDEO_EMBED = `https://drive.google.com/file/d/${VIDEO_ID}/preview`;
+  // ✅ Cloudinary video (WORKING)
+  const VIDEO_URL = "https://res.cloudinary.com/daoud1ilm/video/upload/v1774785246/VN20260329_153044_1_tpfqfh.mp4";
 
-  const FINAL_MESSAGE =
-    "You are my whole world. I promise to do better, to love you better, every single day. 💕";
-
+  const FINAL_MESSAGE = "You are my whole world. I promise to do better, to love you better, every single day. 💕";
   const MUSIC_URL = "";
   // ───────────────────────────────────────────────────────────────────
 
@@ -34,10 +30,13 @@ export default function App() {
 
   const goToVideo = () => {
     setCurrentSection("video");
-    if (audioRef.current) {
-      audioRef.current.volume = 0.3;
-      audioRef.current.play().catch(() => {});
-    }
+
+    setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.volume = 0.3;
+        audioRef.current.play().catch(() => {});
+      }
+    }, 600);
   };
 
   const goToFinal = () => setCurrentSection("final");
@@ -52,7 +51,7 @@ export default function App() {
         </audio>
       )}
 
-      {/* ── SECTION 1 ── */}
+      {/* ── LANDING ── */}
       <section className={`romantic-section landing-section ${currentSection === "landing" ? "active" : "exit"}`}>
         <div className="landing-content">
           <div className="sparkle-ring">
@@ -79,20 +78,26 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── SECTION 2 (VIDEO FIXED) ── */}
+      {/* ── VIDEO ── */}
       <section className={`romantic-section video-section ${currentSection === "video" ? "active" : currentSection === "final" ? "exit" : "hidden-section"}`}>
         <div className="video-content">
           <p className="video-label">I made this for you...</p>
 
           <div className="video-frame">
-            {/* ✅ GOOGLE DRIVE VIDEO */}
-            <iframe
-              src={VIDEO_EMBED}
-              width="100%"
-              height="400"
-              allow="autoplay"
+            <video
+              key={VIDEO_URL}
+              controls
+              autoPlay
+              muted
+              playsInline
+              preload="auto"
+              controlsList="nodownload"
               className="the-video"
-            ></iframe>
+              style={{ width: "100%", borderRadius: "12px" }}
+            >
+              <source src={VIDEO_URL} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
 
           <button className="continue-btn btn-visible" onClick={goToFinal}>
@@ -102,7 +107,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── SECTION 3 ── */}
+      {/* ── FINAL ── */}
       <section className={`romantic-section final-section ${currentSection === "final" ? "active" : "hidden-section"}`}>
         <div className="final-content">
           <div className="heart-burst">
@@ -129,7 +134,7 @@ function FloatingHearts() {
   const emojis = ["💗", "💕", "💖", "✨", "🌸", "💓", "⭐", "💞"];
 
   return (
-    <div className="floating-hearts-container">
+    <div className="floating-hearts-container" aria-hidden>
       {hearts.map((i) => (
         <span
           key={i}
@@ -138,6 +143,7 @@ function FloatingHearts() {
             "--delay": `${(i * 1.3) % 8}s`,
             "--duration": `${6 + (i % 5)}s`,
             "--left": `${(i * 17 + 5) % 95}%`,
+            "--size": `${0.8 + (i % 4) * 0.4}rem`,
           } as React.CSSProperties}
         >
           {emojis[i % emojis.length]}
@@ -150,18 +156,40 @@ function FloatingHearts() {
 /* Forgive Button */
 function ForgiveMeButton() {
   const [clicked, setClicked] = useState(false);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+
+  const handleClick = () => setClicked(true);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (clicked) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const dx = e.clientX - (rect.left + rect.width / 2);
+    const dy = e.clientY - (rect.top + rect.height / 2);
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < 80) {
+      setPos({ x: -dx * 1.5, y: -dy * 1.5 });
+    }
+  };
 
   if (clicked) {
     return (
       <div className="forgiven-message">
         <span>🥰</span>
-        <p>Thank you, my love! I'll never stop trying for you 💕</p>
+        <p>Thank you, my love! I'll never stop trying for you. 💕</p>
       </div>
     );
   }
 
   return (
-    <button className="forgive-btn" onClick={() => setClicked(true)}>
+    <button
+      className="forgive-btn"
+      onClick={handleClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setPos({ x: 0, y: 0 })}
+      style={{ transform: `translate(${pos.x}px, ${pos.y}px)` }}
+    >
       Forgive Me? 🥺
     </button>
   );
